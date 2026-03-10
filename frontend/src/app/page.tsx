@@ -146,6 +146,9 @@ export default function Dashboard() {
     gibs_imagery: false,
     highres_satellite: false,
     kiwisdr: false,
+    firms: false,
+    radiation: false,
+    internet_outages: false,
   });
 
   // NASA GIBS satellite imagery state
@@ -510,6 +513,21 @@ export default function Dashboard() {
               <div className="flex flex-col items-center">
                 <div className="text-[8px] text-[var(--text-muted)] font-mono tracking-[0.2em]">STYLE</div>
                 <div className="text-[11px] text-cyan-400 font-mono font-bold">{activeStyle}</div>
+              </div>
+
+              {/* Divider */}
+              <div className="w-px h-8 bg-[var(--border-primary)]" />
+
+              {/* Space Weather */}
+              <div className="flex flex-col items-center" title={`Kp Index: ${data?.space_weather?.kp_index ?? 'N/A'}`}>
+                <div className="text-[8px] text-[var(--text-muted)] font-mono tracking-[0.2em]">SOLAR</div>
+                <div className={`text-[11px] font-mono font-bold ${
+                  (data?.space_weather?.kp_index ?? 0) >= 5 ? 'text-red-400' :
+                  (data?.space_weather?.kp_index ?? 0) >= 4 ? 'text-yellow-400' :
+                  'text-green-400'
+                }`}>
+                  {data?.space_weather?.kp_text || 'N/A'}
+                </div>
               </div>
             </div>
           </motion.div>

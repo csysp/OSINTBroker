@@ -93,7 +93,10 @@ async def live_data_slow(request: Request):
         "gdelt": d.get("gdelt", []),
         "airports": d.get("airports", []),
         "satellites": d.get("satellites", []),
-        "kiwisdr": d.get("kiwisdr", [])
+        "kiwisdr": d.get("kiwisdr", []),
+        "space_weather": d.get("space_weather"),
+        "radiation": d.get("radiation", []),
+        "internet_outages": d.get("internet_outages", [])
     }
     # ETag based on last_updated + item counts
     last_updated = d.get("last_updated", "")

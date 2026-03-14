@@ -773,18 +773,20 @@ const MaplibreViewer = ({ data, activeLayers, onEntityClick, flyToLocation, sele
         let originLoc = entity.origin_loc; // [lng, lat]
         let destLoc = entity.dest_loc; // [lng, lat]
 
+        const patchedEntity = { ...entity };
         if (dynamicRoute && dynamicRoute.orig_loc && dynamicRoute.dest_loc) {
             originLoc = dynamicRoute.orig_loc;
             destLoc = dynamicRoute.dest_loc;
-            // Also override display names so NewsFeed shows the resolved airport info
-            if (dynamicRoute.origin_name) entity.origin_name = dynamicRoute.origin_name;
-            if (dynamicRoute.dest_name) entity.dest_name = dynamicRoute.dest_name;
+            // Override display names on the shallow copy so NewsFeed sees the resolved airport info
+            // without mutating the shared live data object in dataRef.current
+            if (dynamicRoute.origin_name) patchedEntity.origin_name = dynamicRoute.origin_name;
+            if (dynamicRoute.dest_name) patchedEntity.dest_name = dynamicRoute.dest_name;
         }
 
         const features = [];
         // Extract IATA codes from "IATA: Airport Name" format
-        const originCode = (entity.origin_name || '').split(':')[0]?.trim() || '';
-        const destCode = (entity.dest_name || '').split(':')[0]?.trim() || '';
+        const originCode = (patchedEntity.origin_name || '').split(':')[0]?.trim() || '';
+        const destCode = (patchedEntity.dest_name || '').split(':')[0]?.trim() || '';
 
         if (originLoc) {
             features.push({
